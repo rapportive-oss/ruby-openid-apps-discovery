@@ -245,11 +245,14 @@ module OpenID
       'xrds' => 'xri://xrds'
     }
 
+    def self.ca_bundle_path
+      File.join(File.dirname(__FILE__), 'ca-bundle.crt')
+    end
+
     # Initialize the store
     def self.store
       if @@store.nil?
         OpenID.logger.info("Initializing CA bundle") unless OpenID.logger.nil?        
-        ca_bundle_path = File.join(File.dirname(__FILE__), 'ca-bundle.crt')
         @@store = OpenSSL::X509::Store.new
         @@store.set_default_paths
         @@store.add_file(ca_bundle_path)        

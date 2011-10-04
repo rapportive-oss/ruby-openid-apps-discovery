@@ -6,6 +6,7 @@ require 'test/unit'
 class DiscoveryTest < Test::Unit::TestCase
 
   def setup
+    OpenID.fetcher.ca_file = "#{OpenID::SimpleSign.ca_bundle_path}"
     @discovery = OpenID::GoogleDiscovery.new
   end
   
