@@ -41,7 +41,7 @@ class DiscoveryTest < Test::Unit::TestCase
   
   def test_verify_signature_ok
     xml = Fixtures.read_file('google-site-xrds.xml')
-    authority = OpenID::SimpleSign.verify(xml,"eb6bNj7JYXSFOpcVedcOpJ7CcgwNhs8wwLE0VJQ1XgDmfSClg3pzW9v86Wjwf8OJKtae4QhKCFA0PBUjCIbfHvVPfdPdGDKi7kYygtiPWvQ9s8Lz5ixOqvibHzHEl/zCeN5PEARl9DbO+I216+crq0XUhspM1Ceu1QQ8tL/zyeE=")
+    authority = OpenID::SimpleSign.verify(xml,"P6K9C29tTKAJ3NZb9fYZ65vrkt7FUqiZS1Xf5N36yO4mePjaDtcwObCgVeNSYmyIk3qVv1g5zILSAbci+PDLdrpLBobH5PgSzLPXjPXURxEeCl7GOAM1ncEn6DF1eyItMDRPdYpKk0o+tEOUV6hhZhzlH5J1hHIFh2g8YO9eswU=")
     assert( authority == "hosted-id.google.com", "Invalid authority")
   end
 
