@@ -84,19 +84,13 @@ module OpenID
     # vs. a user's claimed ID ('http://mycompany.com/openid?id=12345') and performs the site or user discovery appropriately
     def perform_discovery(uri)
       OpenID.logger.debug("Performing discovery for #{uri}") unless OpenID.logger.nil?
-      begin
-        domain = uri
-        parsed_uri = URI::parse(uri)
-        domain = parsed_uri.host unless parsed_uri.host.nil?
-        if site_identifier?(parsed_uri)
-          return discover_site(domain)
-        end
-        return discover_user(domain, uri)
-      rescue Exception => e
-        # If we fail, just return nothing and fallback on default discovery mechanisms
-        OpenID.logger.warn("Unexpected exception performing discovery for id #{uri}: #{e}") unless OpenID.logger.nil?
-        return nil
+      domain = uri
+      parsed_uri = URI::parse(uri)
+      domain = parsed_uri.host unless parsed_uri.host.nil?
+      if site_identifier?(parsed_uri)
+        return discover_site(domain)
       end
+      return discover_user(domain, uri)
     end
     
     def site_identifier?(parsed_uri)
