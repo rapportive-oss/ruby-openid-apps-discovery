@@ -163,11 +163,18 @@ module OpenID
 
     def fetch_url(url)
       http_resp = OpenID.fetch(url)
-      if http_resp.code != "200" and http_resp.code != "206"
+      case http_resp.code
+      when "200", "206"
+        return http_resp
+      # 400 is what Google returns for both "we don't know about that domain" and
+      # for "we do know about that domain but they have OpenID turned off".
+      # TODO: Should this throw an error?
+      when "400"
         OpenID.logger.debug("Received #{http_resp.code} when fetching #{url}") unless OpenID.logger.nil?
         return nil
+      else
+        raise OpenID::DiscoveryError, "Got HTTP response #{http_resp.code} when fetching #{url}"
       end
-      return http_resp
     end
     
     # Fetches the XRDS and verifies the signature and authority for the doc
