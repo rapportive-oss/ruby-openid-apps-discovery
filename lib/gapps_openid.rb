@@ -58,19 +58,24 @@ module OpenID
   end
     
   def self.discover(uri)
+    if uri.start_with? "https://www.google.com/accounts"
+      return default_discover(uri)
+    end
+
     discovery = GoogleDiscovery.new
     info = discovery.perform_discovery(uri)
-    if not info.nil?
-      OpenID.logger.debug("Discovery info = #{info}") unless OpenID.logger.nil?
-      return info
-    end
-    return self.default_discover(uri)
+
+    raise OpenID::GoogleDiscovery::NotGoogle if info.nil?
+    OpenID.logger.debug("Discovery info = #{info}") unless OpenID.logger.nil?
+    return info
   end
 
   # Handles the bulk of Google's modified discovery prototcol
   # See http://groups.google.com/group/google-federated-login-api/web/openid-discovery-for-hosted-domains
   class GoogleDiscovery
-    
+
+    class NotGoogle < OpenID::OpenIDError; end
+
     OpenID.cache = RAILS_CACHE rescue nil
     OpenID.logger = RAILS_DEFAULT_LOGGER rescue nil
     
